@@ -36,14 +36,9 @@
             color: white;
             padding: 1rem;
             display: flex;
-            justify-content: flex-start;
-            gap: 255px;
+            justify-content: space-between; /* تعديل لتوزيع العناصر بشكل أفضل */
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode header {
-            background: linear-gradient(to right, #1a1a1a, #2d3748);
         }
 
         .logo a {
@@ -67,10 +62,6 @@
             z-index: 1000;
         }
 
-        body.dark-mode .sidebar {
-            background: linear-gradient(135deg, #1a1a1a, #2d3748);
-        }
-
         .sidebar.open {
             right: 0;
         }
@@ -92,7 +83,7 @@
         }
 
         .menu-btn {
-            margin-right: 40px;
+            font-size: 1.5rem; /* زيادة حجم الزر */
         }
 
         .logout-btn {
@@ -110,15 +101,6 @@
             border-radius: 0.5rem;
         }
 
-        .logout-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: scale(1.02);
-        }
-
-        .logout-btn:active {
-            transform: scale(0.98);
-        }
-
         main {
             padding: 2rem;
             max-width: 1200px;
@@ -134,52 +116,14 @@
             background: linear-gradient(to right, #1e40af, #6b21a8);
         }
 
-        body.dark-mode footer {
-            background: linear-gradient(to right, #1a1a1a, #2d3748);
-        }
-
-        .btn-luxury {
-            background: linear-gradient(to right, #2a61c9, #f65ea5);
-            color: #1a1a1a;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-luxury:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .icon-size {
-            width: 32px;
-            height: 32px;
-        }
-
-        .icon-size.fa-heart,
-        .icon-size.fa-tachometer-alt {
-            font-size: 24px;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            color: #e2e8f0;
-            font-weight: bold;
-        }
-
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
-        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
-            color: #ffd900;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         /* Media Queries للموبايل */
         @media (max-width: 768px) {
-            /* تعديل القائمة الجانبية */
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
             .sidebar {
                 width: 80%;
                 right: -80%;
@@ -189,56 +133,23 @@
                 right: 0;
             }
 
-            /* تعديل الهيدر */
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .logo {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
             .menu-btn {
                 margin-right: 0;
                 margin-bottom: 1rem;
             }
 
-            /* تعديل الفوتر */
             footer {
                 font-size: 0.75rem;
                 padding: 1rem;
             }
 
-            /* تعديل الأزرار */
             .btn-luxury {
                 padding: 0.75rem 1.5rem;
                 font-size: 1rem;
             }
 
-            /* تعديل المحتوى الرئيسي */
             main {
                 padding: 1rem;
-            }
-
-            /* تعديل حجم الأيقونات */
-            .icon-size {
-                width: 24px;
-                height: 24px;
-            }
-
-            .icon-size.fa-heart,
-            .icon-size.fa-tachometer-alt {
-                font-size: 18px;
-            }
-
-            /* تعديل حجم Lottie Player */
-            dotlottie-player {
-                width: 60px !important;
-                height: 60px !important;
             }
         }
     </style>
@@ -287,7 +198,6 @@
         </div>
     </header>
 
-    <!-- القائمة الجانبية -->
     <div class="sidebar" id="sidebar">
         <div class="flex justify-end mb-4">
             <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
@@ -353,7 +263,6 @@
         جميع الحقوق محفوظة © Eng. ISLAM - {% now "Y" %}
     </footer>
 
-    <!-- السكريبتات -->
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
