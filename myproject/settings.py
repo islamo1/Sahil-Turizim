@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v3+80r*v(oxsjki2w2xu1zevcrp!o=@(^+57f&1y=rh+x*^4uy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.up.railway.app', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -121,6 +121,7 @@ USE_TZ = True
 import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+CSRF_TRUSTED_ORIGINS = ['https://sahil-turizim-production.up.railway.app']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
