@@ -1,0 +1,79 @@
+[
+  {
+    "model": "hotels.city",
+    "pk": 1,
+    "fields": {
+      "name": "دبي"
+    }
+  },
+  {
+    "model": "hotels.hotel",
+    "pk": 1,
+    "fields": {
+      "name": "فندق الشاطئ",
+      "phone": "0097155000000",
+      "url": "https://example.com",
+      "city": 1,
+      "rating": 4.5,
+      "view_type": "sea",
+      "room_type": "suite",
+      "image_main": "https://example.com/main.jpg",
+      "image_1": "https://example.com/1.jpg",
+      "image_2": "https://example.com/2.jpg"
+    }
+  },
+  {
+    "model": "hotels.hotelprice",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "start_date": "2025-07-01",
+      "end_date": "2025-07-10",
+      "num_guests": 2,
+      "price_usd": "300.00",
+      "breakfast_included": true,
+      "sea_view": true
+    }
+  },
+  {
+    "model": "hotels.car",
+    "pk": 1,
+    "fields": {
+      "name": "Toyota Camry",
+      "car_type": "sedan",
+      "fuel_type": "gasoline",
+      "transmission": "automatic",
+      "model_year": 2023,
+      "image": "https://example.com/car.jpg"
+    }
+  },
+  {
+    "model": "hotels.carprice",
+    "pk": 1,
+    "fields": {
+      "car": 1,
+      "start_date": "2025-07-01",
+      "end_date": "2025-07-10",
+      "price_per_day": "70.00"
+    }
+  },
+  {
+    "model": "hotels.journey",
+    "pk": 1,
+    "fields": {
+      "name": "جولة صحراوية",
+      "description": "تجربة فريدة في صحراء الإمارات",
+      "icon": "🏜️"
+    }
+  },
+  {
+    "model": "hotels.journeyprice",
+    "pk": 1,
+    "fields": {
+      "journey": 1,
+      "start_date": "2025-07-01",
+      "end_date": "2025-07-10",
+      "price_usd": "200.00"
+    }
+  }
+]

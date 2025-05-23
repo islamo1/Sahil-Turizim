@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+import dj_database_url
+
 
 # تحميل متغيرات البيئة من ملف .env
 
-load_dotenv()
 
 
 
@@ -89,12 +89,15 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-   'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-'NAME': BASE_DIR / 'db.sqlite3', 
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'OPUaepLnyJRwgMkFtQAYZZtgZztUUEwy',
+        'HOST': 'maglev.proxy.rlwy.net',
+        'PORT': '44581',
     }
 }
-
 
 
 # Password validation
