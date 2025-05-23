@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'e)^!1q7_$)vz*eue3c0#5vg4*3+-ja!pykcdmry$$uwc!b@mya')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = ['sahil-turizim-production.up.railway.app', '127.0.0.1', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['https://sahil-turizim-production.up.railway.app']
