@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Ts Sahil Turizim - تسجيل الدخول</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, navy, purple, black, blue);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            color: white;
+        }
+
+        .login-box h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            direction: rtl;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #007BFF;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #000000, #6b21a8);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #b30095;
+        }
+
+        .links {
+            margin-top: 1rem;
+        }
+
+        .links a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #ffdddd;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>Ts Sahil Turizim</h1>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="اسم المستخدم" required>
+            <input type="password" name="password" placeholder="كلمة المرور" required>
+            
+            <button type="submit">تسجيل الدخول</button>
+
+            {% if form.errors %}
+                <div class="error">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+            {% endif %}
+        </form>
+
+        <div class="links">
+        
+        </div>
+    </div>
+</body>
+</html>

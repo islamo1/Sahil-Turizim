@@ -1,0 +1,250 @@
+{% extends 'hotels/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(45deg, #1e3a8a, #6b21a8);
+            background-size: 200% 200%;
+            animation: gradientFlow 10s ease infinite;
+            min-height: 100vh;
+            color: #f3f4f6;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+select {
+    background-color: rgba(255, 255, 255, 0.15) !important; /* خلفية فاتحة شفافة */
+    color: #f3f4f6 !important; /* لون نص فاتح */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+select option {
+    background-color: #1e293b; /* لون خلفية الخيار عند فتح القائمة (لون غامق) */
+    color: #f3f4f6; /* لون النص داخل الخيارات */
+}
+
+select option:hover {
+    background-color: #3b82f6; /* لون الخلفية عند تحويم المؤشر */
+    color: white;
+}
+
+
+
+
+
+
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            padding: 0.5rem 1.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background: linear-gradient(to right, #4b5563, #6b7280);
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #374151, #4b5563);
+            transform: scale(1.05);
+        }
+        h2, h4, h5 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            background: linear-gradient(to right, #000000, #000000);
+            -webkit-background-clip: text;
+                background-clip: text;        
+
+            -webkit-text-fill-color: transparent;
+        }
+        label, p {
+            color: #d1d5db;
+        }
+        hr {
+            border-color: rgba(255, 255, 255, 0.2);
+            margin: 2rem 0;
+        }
+        .icon {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover .icon {
+            transform: translateX(-5px);
+        }
+        input, select, textarea {
+            font-family: 'Cairo', sans-serif;
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #f3f4f6;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        input[type="checkbox"] {
+            width: auto;
+            margin: 0.5rem 0.5rem 1rem 0;
+        }
+        @media (max-width: 640px) {
+            .card {
+                margin-bottom: 1.5rem;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto mt-8 px-4wan sm:px-6 lg:px-8">
+        <h2 class="text-3xl sm:text-4xl mb-8 text-center animate__animated animate__fadeIn">
+            <i class="fas fa-edit mr-2"></i> تعديل تفاصيل الجولة رقم {{ tour.id }}
+        </h2>
+
+        <form method="post" class="card p-6 shadow-lg animate__animated animate__fadeInUp">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="num_people" class="block text-lg mb-2">
+                    <i class="fas fa-users mr-2"></i> عدد الأشخاص:
+                </label>
+                <input type="number" name="num_people" id="num_people" value="{{ tour.num_people }}" required>
+            </div>
+
+            <div class="mb-4 flex items-center">
+                <input type="checkbox" name="has_kids" id="has_kids" {% if tour.has_kids %}checked{% endif %}>
+                <label for="has_kids" class="text-lg mr-2">
+                    <i class="fas fa-child mr-2"></i> هل يوجد أطفال؟
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label for="num_days" class="block text-lg mb-2">
+                    <i class="fas fa-calendar-alt mr-2"></i> عدد الأيام:
+                </label>
+                <input type="number" name="num_days" id="num_days" value="{{ tour.num_days }}" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="start_date" class="block text-lg mb-2">
+                    <i class="fas fa-calendar-check mr-2"></i> تاريخ البدء:
+                </label>
+                <input type="date" name="start_date" id="start_date" value="{{ tour.start_date }}" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="end_date" class="block text-lg mb-2">
+                    <i class="fas fa-calendar-times mr-2"></i> تاريخ الانتهاء:
+                </label>
+                <input type="date" name="end_date" id="end_date" value="{{ tour.end_date }}" required>
+            </div>
+
+            <hr>
+
+            <h4 class="text-2xl mb-6 animate__animated animate__fadeIn">
+                <i class="fas fa-calendar-day mr-2"></i> تعديل تفاصيل كل يوم:
+            </h4>
+
+            {% for day in tour_days %}
+                <div class="card my-6 p-6 shadow-lg animate__animated animate__fadeInUp">
+                    <h5 class="text-xl mb-4">
+                        <i class="fas fa-calendar-day mr-2"></i> اليوم {{ day.day_number }}
+                    </h5>
+
+                    <div class="mb-4">
+                        <label for="hotel_{{ day.id }}" class="block text-lg mb-2">
+                            <i class="fas fa-hotel mr-2"></i> الفندق:
+                        </label>
+                        <select name="hotel_{{ day.id }}" id="hotel_{{ day.id }}">
+                            {% for hotel in hotels %}
+                                <option value="{{ hotel.id }}" {% if day.hotel.id == hotel.id %}selected{% endif %}>
+                                    {{ hotel.name }} - {{ hotel.city.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="journey_{{ day.id }}" class="block text-lg mb-2">
+                            <i class="fas fa-route mr-2"></i> الرحلة:
+                        </label>
+                        <select name="journey_{{ day.id }}" id="journey_{{ day.id }}">
+                            <option value="">-- بدون --</option>
+                            {% for journey in journeys %}
+                                <option value="{{ journey.id }}" {% if day.journey and day.journey.id == journey.id %}selected{% endif %}>
+                                    {{ journey.name }} {{ journey.icon }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="activity_{{ day.id }}" class="block text-lg mb-2">
+                            <i class="fas fa-running mr-2"></i> النشاط:
+                        </label>
+                        <input type="text" name="activity_{{ day.id }}" id="activity_{{ day.id }}" value="{{ day.activity }}">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="note_{{ day.id }}" class="block text-lg mb-2">
+                            <i class="fas fa-sticky-note mr-2"></i> ملاحظات:
+                        </label>
+                        <textarea name="note_{{ day.id }}" id="note_{{ day.id }}">{{ day.note }}</textarea>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="flex flex-wrap gap-3 mt-6">
+                <button type="submit" class="btn btn-primary">
+                    حفظ التعديلات <i class="fas fa-save icon"></i>
+                </button>
+                <a href="{% url 'view_tour_detail' tour.id %}" class="btn btn-secondary">
+                    إلغاء <i class="fas fa-arrow-right icon"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

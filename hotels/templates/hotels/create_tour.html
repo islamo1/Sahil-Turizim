@@ -1,0 +1,140 @@
+{% extends 'hotels/base.html' %}
+{% block content %}
+{% load custom_filters %}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #1e3a8a 0%, #6b21a8 100%);
+  }
+  .tour-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    background: linear-gradient(145deg, #ffffff, #f1f5f9);
+  }
+  .tour-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  .btn-primary {
+    background: linear-gradient(to right, #304f81, #1e40af);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(to right, #2563eb, #1e3a8a);
+    transform: scale(1.05);
+  }
+  .btn-danger {
+    background: linear-gradient(to right, #db3131, #b91c1c);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-danger:hover {
+    background: linear-gradient(to right, #dc2626, #991b1b);
+    transform: scale(1.05);
+  }
+  .btn-secondary {
+    background: linear-gradient(to right, #6b7280, #9ca3af);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background: linear-gradient(to right, #4b5563, #6b7280);
+    transform: scale(1.05);
+  }
+  select {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+  }
+</style>
+
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-white drop-shadow-lg">
+        <i class="fas fa-plane-departure mr-2"></i> إنشاء جولة جديدة
+      </h2>
+    </div>
+
+    <div class="text-center mb-8">
+      <a href="{% url 'start_tour' %}" class="btn-primary inline-block text-white font-semibold py-3 px-8 rounded-lg shadow-lg">
+        <i class="fas fa-plus mr-2"></i> ابدأ جولتك
+      </a>
+    </div>
+
+    <form method="get" class="max-w-sm mx-auto mb-12">
+      <label for="sort" class="block text-white font-semibold mb-2">ترتيب حسب:</label>
+      <select name="sort" onchange="this.form.submit()" class="w-full p-3 rounded-lg border border-gray-300  bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>الأحدث</option>
+        <option value="oldest" {% if request.GET.sort == "oldest" %}selected{% endif %}>الأقدم</option>
+        <option value="expensive" {% if request.GET.sort == "expensive" %}selected{% endif %}>الأغلى سعراً</option>
+        <option value="cheapest" {% if request.GET.sort == "cheapest" %}selected{% endif %}>الأرخص سعراً</option>
+      </select>
+    </form>
+
+    <hr class="border-gray-300 my-10 opacity-50">
+
+    <h3 class="text-2xl font-semibold text-white mb-8">
+      <i class="fas fa-folder-open mr-2"></i> جميع الجولات
+    </h3>
+
+    {% for tour in tours %}
+      <div class="tour-card rounded-xl p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h5 class="text-xl font-bold text-gray-800">جولة رقم #{{ tour.id }}</h5>
+          <span class="text-gray-500 text-sm">{{ tour.created_at|date:"Y-m-d H:i" }}</span>
+        </div>
+        <div class="space-y-2">
+          <p class="text-gray-600"><span class="font-medium">المنشئ:</span> <a href="{% url 'user_profile' tour.user.username %}" class="text-blue-500 hover:underline">{{ tour.user.username }}</a></p>
+          <p class="text-gray-600"><span class="font-medium">عدد الأشخاص:</span> {{ tour.num_people }} | <span class="font-medium">أطفال:</span> {{ tour.has_kids|yesno:"نعم,لا" }}</p>
+          <p class="text-gray-600"><span class="font-medium">الرحلة (اليوم 1):</span> {{ tour.tour_days.first.journey.name }} {{ tour.tour_days.first.journey.icon }}</p>
+          <p class="text-gray-600"><span class="font-medium">المدة:</span> {{ tour.num_days }} يوم</p>
+          <p class="text-gray-600 mt-1"><span class="font-medium">التواريخ:</span> من {{ tour.start_date }} إلى {{ tour.end_date }}</p>
+          <p class="text-gray-600"><span class="font-medium">السعر الكلي:</span> {{ tour.total_price }} $</p>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <a href="{% url 'view_tour_detail' tour.id %}" class="btn-primary text-white font-semibold py-2 px-4 rounded-lg">
+            <i class="fas fa-search mr-2"></i> عرض التفاصيل
+          </a>
+          {% if user == tour.user or user.is_superuser %}
+            <form method="post" action="{% url 'toggle_favorite' tour.id %}" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="btn-danger text-white font-semibold py-2 px-4 rounded-lg">
+                {% if tour.id in user_favorites %}
+                  <i class="fas fa-heart mr-2"></i> مفضلة
+                {% else %}
+                  <i class="far fa-heart mr-2"></i> أضف للمفضلة
+                {% endif %}
+              </button>
+            </form>
+            <form method="post" action="{% url 'rate_tour' tour.id %}" class="inline">
+  {% csrf_token %}
+  <select name="rating" onchange="this.form.submit()" class="p-2 rounded-lg border border-gray-300 text-black bg-white">
+    {% for i in star_range %}
+      <option value="{{ i }}" {% if user_ratings|get_item:tour.id == i %}selected{% endif %}>
+        {{ i }} ⭐
+      </option>
+    {% endfor %}
+  </select>
+</form>
+
+            <form action="{% url 'delete_tour' tour.id %}" method="post" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="btn-danger text-white font-semibold py-2 px-4 rounded-lg">
+                <i class="fas fa-trash mr-2"></i> حذف
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-gray-300 text-center text-lg">
+        <i class="fas fa-ban mr-2"></i> لا توجد جولات محفوظة بعد.
+      </p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

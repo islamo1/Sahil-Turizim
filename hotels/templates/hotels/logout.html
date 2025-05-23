@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الخروج</title>
+  <meta http-equiv="refresh" content="2; url=/" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e3a8a, #6b21a8, #000000, #1e40af);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .logout-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .logout-box h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .logout-box p {
+      font-size: 1.2rem;
+      color: #d1d5db;
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-box">
+    <h1>🚪 تم تسجيل الخروج</h1>
+    <p>ستتم إعادتك إلى صفحة الدخول خلال ثوانٍ...</p>
+  </div>
+</body>
+</html>

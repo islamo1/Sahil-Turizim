@@ -1,0 +1,409 @@
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: linear-gradient(135deg, #1e3a8a, #6b21a8, #000000, #1e40af);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #e2e8f0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        padding: 2rem;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    h2 {
+        color: #e2e8f0;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        font-size: 2.5rem;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 2.5rem;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .card-title {
+        color: #e2e8f0;
+        font-weight: bold;
+        margin-bottom: 1.8rem;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+        color: #e2e8f0;
+        font-weight: bold;
+        margin-bottom: 0.75rem;
+        display: block;
+        font-size: 1.1rem;
+    }
+
+    .form-select, .form-control {
+        background: rgba(255, 255, 255, 0.25);
+        border: 1px solid #e2e8f0;
+        color: #000000;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: #1e40af;
+        box-shadow: 0 0 10px rgba(30, 64, 175, 0.6);
+        outline: none;
+    }
+
+    .btn-success {
+        background: linear-gradient(to right, #1e40af, #6b21a8);
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: bold;
+        color: white;
+        width: 100%;
+        font-size: 1.2rem;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(to right, #1e3a8a, #5b1998);
+        transform: scale(1.08);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .section-hidden {
+        display: none;
+    }
+</style>
+
+<div class="container">
+    <h2><i class="fas fa-calendar-alt"></i> اختيار الخطة اليومية للجولة</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% for day in days_list %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">اليوم {{ day }}</h5>
+
+                <!-- خيار الفندق -->
+                <label><i class="fas fa-hotel"></i> اختر الفندق:</label>
+                <select name="hotel_{{ day }}" class="form-select mb-2 hotel-select" data-day="{{ day }}" required>
+                    <option value="">-- اختر فندقاً --</option>
+                    {% for hotel in hotels %}
+                    <option value="{{ hotel.id }}">{{ hotel.name }} - {{ hotel.city.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- خيار سعر الفندق (مخفي في البداية) -->
+                <div id="price_section_{{ day }}" class="section-hidden">
+                    <label><i class="fas fa-dollar-sign"></i> اختر السعر (البكج):</label>
+                    <select name="price_{{ day }}" class="form-select mb-2 price-select" id="price_{{ day }}" required>
+                        <option value="">-- اختر السعر --</option>
+                        {% for price in prices %}
+                        <option value="{{ price.id }}" data-hotel="{{ price.hotel.id }}">
+                            {{ price.hotel.name }} | {{ price.start_date }} - {{ price.end_date }} | {{ price.price_usd }} $
+                            لعدد {{ price.num_guests }} {% if price.breakfast_included %}+ إفطار {% endif %}{% if price.sea_view %}+ إطلالة بحرية{% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- خيار السائق أو الجولة (مخفي في البداية) -->
+                <div id="transport_section_{{ day }}" class="section-hidden">
+                    <label><i class="fas fa-road"></i> هل تريد سيارة خاصة أم جولات جاهزة؟</label>
+                    <select name="transport_type_{{ day }}" class="form-select mb-2 transport-select" data-day="{{ day }}">
+                        <option value="">-- اختر نوع النقل --</option>
+                        <option value="car">سيارة خاصة</option>
+                        <option value="journey">جولات جاهزة</option>
+                    </select>
+                </div>
+
+                <!-- قسم السيارة (مخفي في البداية) -->
+                <div id="car_section_{{ day }}" class="section-hidden">
+                    <label><i class="fas fa-car"></i> اختر السيارة:</label>
+                    <select name="car_{{ day }}" class="form-select mb-2 car-select" data-day="{{ day }}">
+                        <option value="">-- اختر سيارة --</option>
+                        {% for car in cars %}
+                        <option value="{{ car.id }}">{{ car.name }} - {{ car.model_year }} - {{ car.fuel_type }} - {{ car.transmission }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- سعر السيارة (مخفي في البداية) -->
+                    <div id="car_price_section_{{ day }}" class="section-hidden">
+                        <label><i class="fas fa-money-bill-wave"></i> اختر سعر السيارة:</label>
+                        <select name="car_price_{{ day }}" id="car_price_{{ day }}" class="form-select mb-2">
+                            <option value="">-- اختر سعر السيارة --</option>
+                            {% for price in car_prices %}
+                            <option value="{{ price.id }}" data-car="{{ price.car.id }}">
+                                {{ price.car.car_type }} | {{ price.start_date }} - {{ price.end_date }} | {{ price.price_per_day }}$
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- قسم الجولة (مخفي في البداية) -->
+                <div id="journey_section_{{ day }}" class="section-hidden">
+                    <label><i class="fas fa-map-marked-alt"></i> اختر الرحلة:</label>
+                    <select name="journey_{{ day }}" class="form-select mb-2 journey-select" id="journey_{{ day }}">
+                        <option value="">-- اختر رحلة --</option>
+                        {% for journey in journeys %}
+                        <option value="{{ journey.id }}">{{ journey.name }} {{ journey.icon }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- سعر الجولة (مخفي في البداية) -->
+                    <div id="journey_price_section_{{ day }}" class="section-hidden">
+                        <label><i class="fas fa-money-bill-wave"></i> اختر سعر الرحلة:</label>
+                        <select name="journey_price_{{ day }}" id="journey_price_{{ day }}" class="form-select mb-2">
+                            <option value="">-- اختر سعر الرحلة --</option>
+                            {% for price in journey_prices %}
+                            <option value="{{ price.id }}" data-journey="{{ price.journey.id }}">
+                                {{ price.journey.name }} | {{ price.start_date }} - {{ price.end_date }} | {{ price.price_usd }}$
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- إدخال النشاط (مخفي في البداية) -->
+                <div id="activity_section_{{ day }}" class="section-hidden">
+                    <label><i class="fas fa-pen"></i> النشاط لهذا اليوم:</label>
+                    <input type="text" name="description_{{ day }}" class="form-control mb-2">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="text-center">
+            <button type="submit" class="btn-success"><i class="fas fa-check-circle"></i> متابعة</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // إخفاء جميع الأقسام عدا اختيار الفندق عند التحميل
+    document.querySelectorAll('.section-hidden').forEach(section => {
+        section.style.display = 'none';
+    });
+
+    // التحكم في اختيار الفندق
+    document.querySelectorAll('.hotel-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.dataset.day;
+            const selectedHotelId = this.value;
+            const priceSection = document.getElementById('price_section_' + day);
+            const priceSelect = document.getElementById('price_' + day);
+            const transportSection = document.getElementById('transport_section_' + day);
+            const carSection = document.getElementById('car_section_' + day);
+            const carPriceSection = document.getElementById('car_price_section_' + day);
+            const journeySection = document.getElementById('journey_section_' + day);
+            const journeyPriceSection = document.getElementById('journey_price_section_' + day);
+            const activitySection = document.getElementById('activity_section_' + day);
+
+            if (selectedHotelId) {
+                // إظهار قسم الأسعار وتصفية الخيارات
+                priceSection.style.display = 'block';
+                [...priceSelect.options].forEach(opt => {
+                    opt.hidden = !(!opt.value || opt.dataset.hotel === selectedHotelId);
+                });
+                priceSelect.value = '';
+                // إخفاء الأقسام اللاحقة
+                transportSection.style.display = 'none';
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            } else {
+                // إخفاء جميع الأقسام إذا لم يتم اختيار فندق
+                priceSection.style.display = 'none';
+                transportSection.style.display = 'none';
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار سعر الفندق
+    document.querySelectorAll('.price-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.id.split('_')[1];
+            const transportSection = document.getElementById('transport_section_' + day);
+            const carSection = document.getElementById('car_section_' + day);
+            const carPriceSection = document.getElementById('car_price_section_' + day);
+            const journeySection = document.getElementById('journey_section_' + day);
+            const journeyPriceSection = document.getElementById('journey_price_section_' + day);
+            const activitySection = document.getElementById('activity_section_' + day);
+
+            if (this.value) {
+                // إظهار قسم اختيار نوع النقل
+                transportSection.style.display = 'block';
+                // إخفاء الأقسام اللاحقة
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            } else {
+                transportSection.style.display = 'none';
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار نوع النقل
+    document.querySelectorAll('.transport-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.dataset.day;
+            const carSection = document.getElementById('car_section_' + day);
+            const carPriceSection = document.getElementById('car_price_section_' + day);
+            const journeySection = document.getElementById('journey_section_' + day);
+            const journeyPriceSection = document.getElementById('journey_price_section_' + day);
+            const activitySection = document.getElementById('activity_section_' + day);
+
+            if (this.value === 'car') {
+                // إظهار قسم السيارة وإخفاء قسم الجولة
+                carSection.style.display = 'block';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            } else if (this.value === 'journey') {
+                // إظهار قسم الجولة وإخفاء قسم السيارة
+                journeySection.style.display = 'block';
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            } else {
+                // إخفاء كلا القسمين
+                carSection.style.display = 'none';
+                carPriceSection.style.display = 'none';
+                journeySection.style.display = 'none';
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار السيارة
+    document.querySelectorAll('.car-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.dataset.day;
+            const selectedCarId = this.value;
+            const carPriceSection = document.getElementById('car_price_section_' + day);
+            const carPriceSelect = document.getElementById('car_price_' + day);
+            const activitySection = document.getElementById('activity_section_' + day);
+
+            if (selectedCarId) {
+                // إظهار قسم سعر السيارة وتصفية الخيارات
+                carPriceSection.style.display = 'block';
+                [...carPriceSelect.options].forEach(opt => {
+                    opt.hidden = !(!opt.value || opt.dataset.car === selectedCarId);
+                });
+                carPriceSelect.value = '';
+                activitySection.style.display = 'none';
+            } else {
+                carPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار سعر السيارة
+    document.querySelectorAll('[id^="car_price_"]').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.id.split('_')[2];
+            const activitySection = document.getElementById('activity_section_' + day);
+            if (this.value) {
+                activitySection.style.display = 'block';
+            } else {
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار الجولة
+    document.querySelectorAll('.journey-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.id.split('_')[1];
+            const selectedJourneyId = this.value;
+            const journeyPriceSection = document.getElementById('journey_price_section_' + day);
+            const journeyPriceSelect = document.getElementById('journey_price_' + day);
+            const activitySection = document.getElementById('activity_section_' + day);
+
+            if (selectedJourneyId) {
+                // إظهار قسم سعر الجولة وتصفية الخيارات
+                journeyPriceSection.style.display = 'block';
+                [...journeyPriceSelect.options].forEach(opt => {
+                    opt.hidden = !(!opt.value || opt.dataset.journey === selectedJourneyId);
+                });
+                journeyPriceSelect.value = '';
+                activitySection.style.display = 'none';
+            } else {
+                journeyPriceSection.style.display = 'none';
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+
+    // التحكم في اختيار سعر الجولة
+    document.querySelectorAll('[id^="journey_price_"]').forEach(select => {
+        select.addEventListener('change', function () {
+            const day = this.id.split('_')[2];
+            const activitySection = document.getElementById('activity_section_' + day);
+            if (this.value) {
+                activitySection.style.display = 'block';
+            } else {
+                activitySection.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock content %}

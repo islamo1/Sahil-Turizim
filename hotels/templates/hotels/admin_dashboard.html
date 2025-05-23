@@ -1,0 +1,182 @@
+{% extends 'hotels/base.html' %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: linear-gradient(135deg, #1e3a8a, #620ba8, #4f208bcc, #1e40af);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #ffffff;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    h2, h4, h5, h6 {
+        color: #000000;
+
+        font-weight: bold;
+    }
+
+    .alert {
+        background: #ffffffc7;
+        border: none;
+        color: #000000;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px #5060c2;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .alert:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgb(0, 0, 0);
+    }
+
+    .card {
+        background: rgb(2255, 255, 255, 0.671);
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgb(60, 21, 153);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        color: #ff0000;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul li {
+        padding: 0.5rem 0;
+        font-size: 1.1rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+</style>
+
+<div class="container">
+    <h2 class="mb-4 text-center"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h2>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-3">
+            <div class="alert alert-primary">
+                <h4>{{ total_tours }}</h4>
+                <p><i class="fas fa-globe"></i> إجمالي الجولات</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-success">
+                <h4>{{ today_tours }}</h4>
+                <p><i class="fas fa-calendar-day"></i> جولات اليوم</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-info">
+                <h4>{{ week_tours }}</h4>
+                <p><i class="fas fa-calendar-week"></i> جولات الأسبوع</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-warning">
+                <h4>{{ month_tours }}</h4>
+                <p><i class="fas fa-calendar-alt"></i> جولات الشهر</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-dollar-sign"></i> أرباح اليوم</h5>
+                    <p class="card-text">{{ total_today }} $</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-chart-line"></i> أرباح الأسبوع</h5>
+                    <p class="card-text">{{ total_week }} $</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-calendar-check"></i> أرباح الشهر</h5>
+                    <p class="card-text">{{ total_month }} $</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4><i class="fas fa-hotel"></i> أكثر الفنادق استخدامًا:</h4>
+    <ul>
+        {% for h in top_hotels %}
+            <li>{{ h.hotel__name }} - {{ h.count }} مرة</li>
+        {% empty %}
+            <li>لا يوجد بيانات</li>
+        {% endfor %}
+    </ul>
+
+    <h4 class="mt-4"><i class="fas fa-users-crown"></i> أكثر المستخدمين نشاطًا</h4>
+    <div class="row">
+        <div class="col-md-4">
+            <h6>اليوم</h6>
+            <ul>
+                {% for user in active_users_today %}
+                    <li>{{ user.user__username }} - {{ user.count }} جولة</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h6>هذا الأسبوع</h6>
+            <ul>
+                {% for user in active_users_week %}
+                    <li>{{ user.user__username }} - {{ user.count }} جولة</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h6>هذا الشهر</h6>
+            <ul>
+                {% for user in active_users_month %}
+                    <li>{{ user.user__username }} - {{ user.count }} جولة</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

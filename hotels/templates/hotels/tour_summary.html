@@ -1,0 +1,189 @@
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: linear-gradient(135deg, #1e3a8a, #6b21a8, #000000, #1e40af);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #e2e8f0;
+        margin: 0;
+        padding: 0;
+       min-height: 100vh;
+        overflow-x: hidden;
+      
+      
+
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .summary-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(5px);
+    }
+
+    .summary-container h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #e2e8f0;
+        font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-box {
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: #e2e8f0;
+    }
+
+    .info-box strong {
+        color: #e2e8f0;
+    }
+
+    .day-card {
+        border: none;
+        border-left: 5px solid #007bff;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .day-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .day-card h5 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #e2e8f0;
+        font-weight: bold;
+    }
+
+    .day-card p {
+        margin: 4px 0;
+        font-size: 15px;
+        color: #e2e8f0;
+    }
+
+    .total-price-box {
+        background: rgba(46, 204, 113, 0.2);
+        border: 2px solid #2ecc71;
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 10px;
+        text-align: center;
+        color: #e2e8f0;
+    }
+
+    .total-price-box h4 {
+        font-size: 24px;
+        color: #27ae60;
+        font-weight: bold;
+    }
+
+    .btn-success {
+        background: linear-gradient(to right, #1e40af, #6b21a8);
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        color: white;
+        width: 100%;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(to right, #1e3a8a, #5b1998);
+        transform: scale(1.05);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(to right, #6b21a8, #1e40af);
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        color: white;
+        width: 100%;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(to right, #5b1998, #1e3a8a);
+        transform: scale(1.05);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mt-3 {
+        margin-top: 1.5rem;
+    }
+
+    .mt-4 {
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="summary-container">
+    <h2><i class="fas fa-suitcase"></i> ملخص الجولة</h2>
+
+    <div class="info-box">
+        <strong>أنشأ الجولة:</strong> <a href="{% url 'user_profile' user.username %}" style="color: #e2e8f0;">{{ user.username }}</a>
+    </div>
+    <div class="info-box">
+        <strong>عدد الأشخاص:</strong> {{ num_people }}
+    </div>
+    <div class="info-box">
+        <strong>التواريخ:</strong> من {{ start_date }} إلى {{ end_date }}
+    </div>
+    <hr style="border-color: #e2e8f0;">
+
+    {% for day in summary %}
+    <div class="day-card">
+        <h5><i class="fas fa-calendar-day"></i> اليوم {{ day.day }}</h5>
+        <p><strong><i class="fas fa-hotel"></i> الفندق:</strong> {{ day.hotel.name }} - {{ day.hotel.city.name }}</p>
+        <p><strong><i class="fas fa-bullseye"></i> النشاط:</strong> {{ day.activity }}</p>
+        {% if day.journey %}<p><strong><i class="fas fa-globe"></i> الرحلة:</strong> {{ day.journey.name }} {{ day.journey.icon }}</p>{% endif %}
+        <p><strong><i class="fas fa-sticky-note"></i> ملاحظات:</strong> {{ day.note }}</p>
+        <p><strong><i class="fas fa-dollar-sign"></i> السعر:</strong> {{ day.price }} $</p>
+    </div>
+    {% endfor %}
+
+    <div class="total-price-box">
+        <h4><i class="fas fa-money-bill-wave"></i> السعر الإجمالي للجولة: {{ total_price }} $</h4>
+    </div>
+    <div class="text-center mt-4">
+  <a href="{% url 'select_hotels_and_trips' %}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> رجوع للتخطيط
+  </a>
+</div>
+
+
+    <form method="post" class="text-center mt-4">
+        {% csrf_token %}
+        <button type="submit" style="height: 90px; "  class="btn-success "><i class="fas fa-check-circle"></i> إنهاء وحفظ الجولة</button>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'create_tour' %}" class="btn-secondary"><i class="fas fa-arrow-left"></i> رجوع لإنشاء جولة جديدة</a>
+    </div>
+</div>
+{% endblock %}

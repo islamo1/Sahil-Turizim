@@ -1,0 +1,183 @@
+{% extends 'hotels/base.html' %}
+{% load static %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: linear-gradient(135deg, #1e3a8a, #6b21a8, #000000, #1e40af);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #e2e8f0;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    h2, h5 {
+        color: #e2e8f0;
+        font-weight: bold;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        color: #e2e8f0;
+         min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .display-6 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .text-muted {
+        color: #a0a0a0;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .col-md-3, .col-md-4 {
+        padding: 1rem;
+    }
+     .col-md-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+
+    .col-md-4 {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+    }
+
+    @media (max-width: 768px) {
+        .col-md-3, .col-md-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2 class="mb-4 text-center"><i class="fas fa-user"></i> نشاط المستخدم: {{ profile_user.username }}</h2>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-3 ">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-calendar-day"></i> هذا اليوم</h5>
+                    <p class="display-6">{{ today_count }}</p>
+                    <p class="text-muted">جولات اليوم</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card shadow-sm border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary"><i class="fas fa-calendar-week"></i> هذا الأسبوع</h5>
+                    <p class="display-6">{{ week_count }}</p>
+                    <p class="text-muted">جولات هذا الأسبوع</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning"><i class="fas fa-calendar-alt"></i> هذا الشهر</h5>
+                    <p class="display-6">{{ month_count }}</p>
+                    <p class="text-muted">جولات هذا الشهر</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card shadow-sm border-dark">
+                <div class="card-body">
+                    <h5 class="card-title text-dark"><i class="fas fa-globe"></i> الإجمالي</h5>
+                    <p class="display-6">{{ total_count }}</p>
+                    <p class="text-muted">عدد الجولات الكلي</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border-color: #e2e8f0;">
+
+    <div class="row text-center">
+        <div class="col-md-4 ">
+            <div class="card border-info shadow-sm">
+                <div class="card-body">
+                    <h5 class="text-info"><i class="fas fa-star"></i> التقييم العام</h5>
+                    <p class="display-6">{{ average_rating|default:"0" }}/5</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="card border-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="text-success"><i class="fas fa-dollar-sign"></i> مجموع الإنفاق</h5>
+                    <p class="display-6">{{ total_spent }} $</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="card border-danger shadow-sm">
+                <div class="card-body">
+                    <h5 class="text-danger"><i class="fas fa-arrow-down"></i> أرخص جولة</h5>
+                    <p class="display-6">{{ cheapest_tour.total_price|default:"-" }} $</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 offset-md-4 mt-3 ">
+            <div class="card border-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="text-warning"><i class="fas fa-arrow-up"></i> أغلى جولة</h5>
+                    <p class="display-6">{{ most_expensive_tour.total_price|default:"-" }} $</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

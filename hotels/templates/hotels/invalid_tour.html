@@ -1,0 +1,10 @@
+{% extends 'hotels/base.html' %}
+{% block content %}
+  <div class="container py-5 text-center">
+    <div class="alert alert-danger shadow-lg p-4">
+      <h2 class="mb-3">🚫 حدث خطأ في إنشاء الجولة</h2>
+      <p class="lead">قد تكون بيانات الجولة مفقودة أو انتهت صلاحيتها.</p>
+      <a href="{% url 'create_tour' %}" class="btn btn-danger mt-4">🔁 إعادة إنشاء جولة</a>
+    </div>
+  </div>
+{% endblock %}

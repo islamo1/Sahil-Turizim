@@ -1,0 +1,147 @@
+{% extends 'hotels/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(45deg, #1e3a8a, #6b21a8);
+            background-size: 200% 200%;
+            animation: gradientFlow 10s ease infinite;
+            min-height: 100vh;
+            color: #f3f4f6;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card, .profile-card {
+            background: rgba(255, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .card:hover, .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            padding: 0.5rem 1.5rem;
+        }
+        .btn-info {
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+        }
+        .btn-info:hover {
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            transform: scale(1.05);
+        }
+        .btn-danger {
+            background: linear-gradient(to right, #ef4444, #f87171);
+        }
+        .btn-danger:hover {
+            background: linear-gradient(to right, #dc2626, #ef4444);
+            transform: scale(1.05);
+        }
+        h3, h5 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            background: linear-gradient(to right, #e2e8f0, #d1d5db);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: #d1d5db;
+        }
+        .alert {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #60a5fa;
+            border-radius: 10px;
+            font-family: 'Amiri', serif;
+            color: #d1d5db;
+        }
+        .icon {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover .icon {
+            transform: translateX(-5px);
+        }
+        @media (max-width: 640px) {
+            .card, .profile-card {
+                margin-bottom: 1.5rem;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+        <div class="profile-card p-6 mb-6 shadow-lg animate__animated animate__fadeIn">
+            <h3 class="text-2xl sm:text-3xl mb-6 flex items-center gap-2">
+                <i class="fas fa-user-circle"></i> الملف الشخصي
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
+                <p><i class="fas fa-user mr-2"></i><strong>اسم المستخدم:</strong> {{ profile_user.username }}</p>
+                <p><i class="fas fa-envelope mr-2"></i><strong>البريد الإلكتروني:</strong> {{ profile_user.email|default:"غير متوفر" }}</p>
+                <p><i class="fas fa-calendar-alt mr-2"></i><strong>تاريخ التسجيل:</strong> {{ profile_user.date_joined|date:"Y-m-d" }}</p>
+                <p><i class="fas fa-suitcase-rolling mr-2"></i><strong>عدد الجولات:</strong> {{ tours.count }}</p>
+                <p><i class="fas fa-dollar-sign mr-2"></i><strong>مجموع الإنفاق:</strong> {{ total_spent|default:"0.00" }} $</p>
+            </div>
+        </div>
+
+        {% if tours %}
+            {% for tour in tours %}
+                <div class="card mb-6 p-6 shadow-lg animate__animated animate__fadeInUp">
+                    <h5 class="text-xl sm:text-2xl mb-4">
+                        <i class="fas fa-suitcase-rolling mr-2"></i> جولة #{{ tour.id }}
+                    </h5>
+                    <p class="text-base sm:text-lg mb-2">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        من {{ tour.start_date }} إلى {{ tour.end_date }} ({{ tour.num_days }} أيام)
+                    </p>
+                    <p class="text-base sm:text-lg mb-4">
+                        <i class="fas fa-dollar-sign mr-2"></i>
+                        السعر الإجمالي: {{ tour.total_price }} $
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{% url 'view_tour_detail' tour.id %}" class="btn btn-info">
+                            عرض التفاصيل <i class="fas fa-eye icon"></i>
+                        </a>
+                        {% if request.user == profile_user or request.user.is_superuser %}
+                            <form action="{% url 'delete_tour' tour.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-danger">
+                                    حذف <i class="fas fa-trash-alt icon"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert text-center p-6 animate__animated animate__fadeIn">
+                <i class="fas fa-info-circle mr-2"></i> لا توجد جولات حالياً.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

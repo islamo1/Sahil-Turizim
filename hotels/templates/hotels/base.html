@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}TS Sahil Turizim{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #6b21a8);
+            color: #e2e8f0;
+            margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a1a, #2d3748);
+        }
+
+        header {
+            background: linear-gradient(to right, #1e40af, #6b21a8);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content:flex-start;
+            gap: 255px;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(to right, #1a1a1a, #2d3748);
+        }
+
+        .logo a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.5rem;
+        
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 300px;
+            height: 100%;
+            background: linear-gradient(135deg, #3b4e8a, #6b21a8);
+            color: #e2e8f0;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            padding: 1.5rem;
+            z-index: 1000;
+        }
+
+        body.dark-mode .sidebar {
+            background: linear-gradient(135deg, #1a1a1a, #2d3748);
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+        .menu-btn {
+    margin-right: 40px;
+}
+
+
+        .logout-btn {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    font-size: 1rem;
+    padding: 0.75rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 0.5rem;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+/* إضافة حركة بسيطة عند الضغط */
+.logout-btn:active {
+    transform: scale(0.98);
+}
+
+        
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+            background: linear-gradient(to right, #1e40af, #6b21a8);
+        }
+
+        body.dark-mode footer {
+            background: linear-gradient(to right, #1a1a1a, #2d3748);
+        }
+
+        /* أنماط الأزرار الفاخرة */
+        .btn-luxury {
+            background: linear-gradient(to right, #2a61c9, #f65ea5);
+            color: #1a1a1a;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        
+        }
+        .icon-size {
+  width: 32px;
+  height: 32px;
+}
+.icon-size.fa-heart,
+.icon-size.fa-tachometer-alt {
+  font-size: 24px;
+}
+
+
+        /* أنماط النصوص */
+        h1, h2, h3, h4, h5, h6 {
+            color: #e2e8f0;
+            font-weight: bold;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+            color: #ffd900;
+        }
+
+        /* أنماط التحريك */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+         <button class="menu-btn text-2xl bg-transparent border-none text-white hover:text-gray-200" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo flex items-center space-x-4 space-x-reverse">
+            <a href="{% url 'create_tour' %}" class="flex items-center text-2xl font-extrabold tracking-wide">
+                <i class="fas fa-plane text-3xl ml-2"></i>
+                TS Sahil Turizim
+            </a>
+            <button onclick="toggleTheme()" class="btn-icon bg-gray-800 text-white p-2 rounded-full">
+                <dotlottie-player
+                    src="https://lottie.host/3cf012c6-bbbc-41f4-95bb-0229c0a6e4a5/zXwpI1fPs5.lottie"
+                    background="transparent"
+                    speed="1"
+                    style="width: 80px; height: 24px"
+                    loop
+                    autoplay
+                ></dotlottie-player>
+            </button>
+            {% if request.user.is_superuser %}
+                <a href="/admin/" class="btn-luxury ">🔧 لوحة التحكم</a>
+            {% endif %}
+            <a href="{% url 'favorite_tours' %}" class="btn-luxury">
+                <i class="fas fa-heart  icon-size mr-2" style="font-size: 24px; width: 42px; height:32px;"></i> 
+                 المفضلة
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn-luxury">
+                <i class="fas fa-tachometer-alt icon-size mr-2"></i> لوحة المعلومات
+            </a>
+           
+            <a href="{% url 'user_activity' request.user.username %}" class="btn-luxury" style="display: inline-flex; align-items: center; gap: 8px;">
+    <dotlottie-player
+        src="https://lottie.host/a0f3f9db-5bec-4021-9a1c-fcf89094fa40/bS4sK7DiCM.lottie"
+        background="transparent"
+        speed="1"
+        class="icon-size" 
+        loop
+        autoplay
+    ></dotlottie-player>
+    سجل الانشطة
+</a>
+        </div>
+       
+    </header>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar" id="sidebar">
+        <div class="flex justify-end mb-4">
+    <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
+        <a href="{% url 'create_tour' %}">
+            <dotlottie-player
+                src="https://lottie.host/19c32d3e-043a-4596-92c8-8bf47520c7e7/CFVq8US2rr.lottie"
+                background="transparent"
+                speed="1"
+                style="width: 93px; height: 80px"
+                loop
+                autoplay
+            ></dotlottie-player>
+            الصفحة الرئيسية
+        </a>
+        <hr class="my-2 border-gray-600">
+        <a href="{% url 'hotel_list' %}">
+            <dotlottie-player
+                src="https://lottie.host/17dad7bb-705f-4a90-b231-d2ab6ba50764/DSpXt2kpIc.lottie"
+                background="transparent"
+                speed="1"
+                style="width: 93px; height: 72px"
+                loop
+                autoplay
+            ></dotlottie-player>
+            قائمة الفنادق
+        </a>
+        <a href="{% url 'my_tours' %}">
+            <dotlottie-player
+                src="https://lottie.host/8a7e5203-469a-4319-a650-f472ca9ab81f/B0qKW1qtlJ.lottie"
+                background="transparent"
+                speed="1"
+                style="width: 93px; height: 62px"
+                loop
+                autoplay
+            ></dotlottie-player>
+            جولاتي
+        </a>
+        <hr class="my-2 border-gray-600">
+<form action="{% url 'logout' %}" method="post" class="logout-btn-form">
+  {% csrf_token %}
+<button type="submit" class="sidebar-link logout-btn hover-effect">
+    <dotlottie-player
+      src="https://lottie.host/c55785c0-74a2-4eb4-9117-45ca1a2e9a85/q9cyOUnIyX.lottie"
+      background="transparent"
+      speed="1"
+      style="width: 93px; height: 62px"
+      loop
+      autoplay>
+    </dotlottie-player>
+    تسجيل الخروج
+  </button>
+</form>
+
+
+        </a>
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+
+   <footer style="text-align: center; padding: 1rem; background: linear-gradient(to right, #1e3a8a, #6b21a8); color: white; font-size: 0.9rem;">
+  جميع الحقوق محفوظة &copy; Eng. ISLAM - {% now "Y" %}
+</footer>
+
+    <!--  الوان -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        }
+
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+
+
+        // إغلاق القائمة عند الضغط خارجها
+window.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const menuBtn = document.querySelector('.menu-btn');
+
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+    }
+});
+
+    </script>
+
+
+
+
+</body>
+</html>
