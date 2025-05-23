@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from django.db.models import Prefetch, Q, Count, Sum, Avg, Min, Max
 from django.utils.timezone import now
 from calendar import monthrange
+from django.contrib.auth import logout
+
+
 
 
 
@@ -531,4 +534,4 @@ def favorite_tours(request):
     })
 def custom_logout_view(request):
     logout(request)
-    return render(request, 'custom_logout.html')
+    return render(request, 'hotels/custom_logout.html')

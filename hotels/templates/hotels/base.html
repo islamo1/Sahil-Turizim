@@ -36,9 +36,8 @@
             color: white;
             padding: 1rem;
             display: flex;
-            flex-wrap: wrap;
-            justify-content:space-between;
-            gap: 1rem;
+            justify-content: flex-start;
+            gap: 255px;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -47,21 +46,11 @@
             background: linear-gradient(to right, #1a1a1a, #2d3748);
         }
 
-
-        .logo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    align-items: center;
-    justify-content: flex-start;
-}
-
         .logo a {
             color: white;
             font-weight: bold;
             text-decoration: none;
             font-size: 1.5rem;
-        
         }
 
         .sidebar {
@@ -101,37 +90,35 @@
             background-color: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
         }
-        .menu-btn {
-    margin-right: 40px;
-}
 
+        .menu-btn {
+            margin-right: 40px;
+        }
 
         .logout-btn {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    color: #e2e8f0;
-    font-size: 1rem;
-    padding: 0.75rem;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    border-radius: 0.5rem;
-}
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1rem;
+            padding: 0.75rem;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            border-radius: 0.5rem;
+        }
 
-.logout-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.02);
-}
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
 
-/* إضافة حركة بسيطة عند الضغط */
-.logout-btn:active {
-    transform: scale(0.98);
-}
+        .logout-btn:active {
+            transform: scale(0.98);
+        }
 
-        
         main {
             padding: 2rem;
             max-width: 1200px;
@@ -151,7 +138,6 @@
             background: linear-gradient(to right, #1a1a1a, #2d3748);
         }
 
-        /* أنماط الأزرار الفاخرة */
         .btn-luxury {
             background: linear-gradient(to right, #2a61c9, #f65ea5);
             color: #1a1a1a;
@@ -164,19 +150,18 @@
         .btn-luxury:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        
         }
+
         .icon-size {
-  width: 32px;
-  height: 32px;
-}
-.icon-size.fa-heart,
-.icon-size.fa-tachometer-alt {
-  font-size: 24px;
-}
+            width: 32px;
+            height: 32px;
+        }
 
+        .icon-size.fa-heart,
+        .icon-size.fa-tachometer-alt {
+            font-size: 24px;
+        }
 
-        /* أنماط النصوص */
         h1, h2, h3, h4, h5, h6 {
             color: #e2e8f0;
             font-weight: bold;
@@ -187,53 +172,80 @@
             color: #ffd900;
         }
 
-        /* أنماط التحريك */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
+        /* Media Queries للموبايل */
         @media (max-width: 768px) {
-    .icon-size {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 18px !important;
-    }
+            /* تعديل القائمة الجانبية */
+            .sidebar {
+                width: 80%;
+                right: -80%;
+            }
 
-    .btn-luxury {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.875rem;
-    }
+            .sidebar.open {
+                right: 0;
+            }
 
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+            /* تعديل الهيدر */
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
 
-    .menu-btn {
-        margin-right: 0;
-    }
+            .logo {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
 
-    .logo {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+            .menu-btn {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
 
-    .sidebar {
-        width: 100%;
-        right: -100%;
+            /* تعديل الفوتر */
+            footer {
+                font-size: 0.75rem;
+                padding: 1rem;
+            }
 
-    }
-    .sidebar.open {
-        right: 0;
-    }
-}
+            /* تعديل الأزرار */
+            .btn-luxury {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
 
+            /* تعديل المحتوى الرئيسي */
+            main {
+                padding: 1rem;
+            }
+
+            /* تعديل حجم الأيقونات */
+            .icon-size {
+                width: 24px;
+                height: 24px;
+            }
+
+            .icon-size.fa-heart,
+            .icon-size.fa-tachometer-alt {
+                font-size: 18px;
+            }
+
+            /* تعديل حجم Lottie Player */
+            dotlottie-player {
+                width: 60px !important;
+                height: 60px !important;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-         <button class="menu-btn text-2xl bg-transparent border-none text-white hover:text-gray-200" onclick="toggleSidebar()">
+        <button class="menu-btn text-2xl bg-transparent border-none text-white hover:text-gray-200" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
         </button>
         <div class="logo flex items-center space-x-4 space-x-reverse">
@@ -255,36 +267,33 @@
                 <a href="/admin/" class="btn-luxury ">🔧 لوحة التحكم</a>
             {% endif %}
             <a href="{% url 'favorite_tours' %}" class="btn-luxury">
-                <i class="fas fa-heart  icon-size mr-2" style="font-size: 24px; width: 42px; height:32px;"></i> 
-                 المفضلة
+                <i class="fas fa-heart icon-size mr-2"></i> 
+                المفضلة
             </a>
             <a href="{% url 'dashboard' %}" class="btn-luxury">
                 <i class="fas fa-tachometer-alt icon-size mr-2"></i> لوحة المعلومات
             </a>
-           
             <a href="{% url 'user_activity' request.user.username %}" class="btn-luxury" style="display: inline-flex; align-items: center; gap: 8px;">
-    <dotlottie-player
-        src="https://lottie.host/a0f3f9db-5bec-4021-9a1c-fcf89094fa40/bS4sK7DiCM.lottie"
-        background="transparent"
-        speed="1"
-        class="icon-size" 
-        loop
-        autoplay
-    ></dotlottie-player>
-    سجل الانشطة
-</a>
+                <dotlottie-player
+                    src="https://lottie.host/a0f3f9db-5bec-4021-9a1c-fcf89094fa40/bS4sK7DiCM.lottie"
+                    background="transparent"
+                    speed="1"
+                    class="icon-size" 
+                    loop
+                    autoplay
+                ></dotlottie-player>
+                سجل الانشطة
+            </a>
         </div>
-       
     </header>
 
     <!-- القائمة الجانبية -->
     <div class="sidebar" id="sidebar">
         <div class="flex justify-end mb-4">
-    <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-
+            <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
         <a href="{% url 'create_tour' %}">
             <dotlottie-player
                 src="https://lottie.host/19c32d3e-043a-4596-92c8-8bf47520c7e7/CFVq8US2rr.lottie"
@@ -320,35 +329,31 @@
             جولاتي
         </a>
         <hr class="my-2 border-gray-600">
-<form action="{% url 'logout' %}" method="post" class="logout-btn-form">
-  {% csrf_token %}
-<button type="submit" class="sidebar-link logout-btn hover-effect">
-    <dotlottie-player
-      src="https://lottie.host/c55785c0-74a2-4eb4-9117-45ca1a2e9a85/q9cyOUnIyX.lottie"
-      background="transparent"
-      speed="1"
-      style="width: 93px; height: 62px"
-      loop
-      autoplay>
-    </dotlottie-player>
-    تسجيل الخروج
-  </button>
-</form>
-
-
-        </a>
+        <form action="{% url 'logout' %}" method="post" class="logout-btn-form">
+            {% csrf_token %}
+            <button type="submit" class="sidebar-link logout-btn hover-effect">
+                <dotlottie-player
+                    src="https://lottie.host/c55785c0-74a2-4eb4-9117-45ca1a2e9a85/q9cyOUnIyX.lottie"
+                    background="transparent"
+                    speed="1"
+                    style="width: 93px; height: 62px"
+                    loop
+                    autoplay>
+                </dotlottie-player>
+                تسجيل الخروج
+            </button>
+        </form>
     </div>
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
+    <footer style="text-align: center; padding: 1rem; background: linear-gradient(to right, #1e3a8a, #6b21a8); color: white; font-size: 0.9rem;">
+        جميع الحقوق محفوظة © Eng. ISLAM - {% now "Y" %}
+    </footer>
 
-   <footer style="text-align: center; padding: 1rem; background: linear-gradient(to right, #1e3a8a, #6b21a8); color: white; font-size: 0.9rem;">
-  جميع الحقوق محفوظة &copy; Eng. ISLAM - {% now "Y" %}
-</footer>
-
-    <!--  الوان -->
+    <!-- السكريبتات -->
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
@@ -364,21 +369,14 @@
             document.body.classList.add("dark-mode");
         }
 
+        window.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
 
-        // إغلاق القائمة عند الضغط خارجها
-window.addEventListener('click', function(e) {
-    const sidebar = document.getElementById('sidebar');
-    const menuBtn = document.querySelector('.menu-btn');
-
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove('open');
-    }
-});
-
+            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
     </script>
-
-
-
-
 </body>
 </html>

@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='hotels/home.html'), name='login'),
-    path('logout/', custom_logout_view, name='logout'),  # سمّيته logout عشان القالب يشتغل علطول
+    path('logout/', custom_logout_view, name='logout'),  
     path('hotels/', hotel_list, name='hotel_list'),
     path('hotels/add/', add_hotel, name='add_hotel'),
     path('prices/add/', add_price, name='add_price'),
