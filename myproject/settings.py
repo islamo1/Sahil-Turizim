@@ -34,7 +34,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'e)^!1q7_$)vz*eue3c0#5vg4*3+-ja!pykc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = ['sahil-turizim-production.up.railway.app', '127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['https://sahil-turizim-production.up.railway.app']
 
 
 # Application definition
