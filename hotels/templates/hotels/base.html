@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -32,13 +33,21 @@
         }
 
         header {
-            background: linear-gradient(to right, #1e40af, #6b21a8);
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between; /* تعديل لتوزيع العناصر بشكل أفضل */
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, #1e40af, #6b21a8);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; /* ✅ توسيط العناصر أفقياً */
+    align-items: center;
+    gap: 1rem; /* مسافة بين العناصر */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+        body.dark-mode header {
+            background: linear-gradient(to right, #1a1a1a, #2d3748);
         }
 
         .logo a {
@@ -62,6 +71,10 @@
             z-index: 1000;
         }
 
+        body.dark-mode .sidebar {
+            background: linear-gradient(135deg, #1a1a1a, #2d3748);
+        }
+
         .sidebar.open {
             right: 0;
         }
@@ -83,7 +96,7 @@
         }
 
         .menu-btn {
-            font-size: 1.5rem; /* زيادة حجم الزر */
+            margin-right: 1rem;
         }
 
         .logout-btn {
@@ -101,8 +114,17 @@
             border-radius: 0.5rem;
         }
 
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .logout-btn:active {
+            transform: scale(0.98);
+        }
+
         main {
-            padding: 2rem;
+            padding: 1.5rem;
             max-width: 1200px;
             margin: auto;
             animation: fadeIn 0.5s ease-in;
@@ -110,42 +132,77 @@
 
         footer {
             text-align: center;
-            padding: 2rem;
+            padding: 1.5rem;
             font-size: 0.875rem;
             color: #e2e8f0;
             background: linear-gradient(to right, #1e40af, #6b21a8);
         }
 
-        /* Media Queries للموبايل */
+        body.dark-mode footer {
+            background: linear-gradient(to right, #1a1a1a, #2d3748);
+        }
+
+        .btn-luxury {
+            background: linear-gradient(to right, #2a61c9, #f65ea5);
+            color: #1a1a1a;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-size {
+            width: 32px;
+            height: 32px;
+        }
+
+        .icon-size.fa-heart,
+        .icon-size.fa-tachometer-alt {
+            font-size: 24px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #e2e8f0;
+            font-weight: bold;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+            color: #ffd900;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Tweaks */
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
+    header {
+        flex-direction: column; /* ✅ العناصر تتكدس عمودياً */
+        align-items: center;    /* ✅ توسيط داخل العمود */
+        gap: 1.2rem;
+        padding: 1rem 0.5rem;
+    }
+    
 
-            .sidebar {
-                width: 80%;
-                right: -80%;
-            }
-
-            .sidebar.open {
-                right: 0;
-            }
-
-            .menu-btn {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-
-            footer {
-                font-size: 0.75rem;
-                padding: 1rem;
+            .logo a {
+                font-size: 1.2rem;
             }
 
             .btn-luxury {
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
+                width: 100%;
+                text-align: center;
+                padding: 0.75rem;
+            }
+
+            .menu-btn {
+                align-self: flex-end;
             }
 
             main {
@@ -156,7 +213,7 @@
 </head>
 <body>
     <header>
-        <button class="menu-btn text-2xl bg-transparent border-none text-white hover:text-gray-200" onclick="toggleSidebar()">
+         <button class="menu-btn text-2xl bg-transparent border-none text-white hover:text-gray-200" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
         </button>
         <div class="logo flex items-center space-x-4 space-x-reverse">
@@ -178,32 +235,36 @@
                 <a href="/admin/" class="btn-luxury ">🔧 لوحة التحكم</a>
             {% endif %}
             <a href="{% url 'favorite_tours' %}" class="btn-luxury">
-                <i class="fas fa-heart icon-size mr-2"></i> 
-                المفضلة
+                <i class="fas fa-heart  icon-size mr-2" style="font-size: 24px; width: 42px; height:32px;"></i> 
+                 المفضلة
             </a>
             <a href="{% url 'dashboard' %}" class="btn-luxury">
                 <i class="fas fa-tachometer-alt icon-size mr-2"></i> لوحة المعلومات
             </a>
+           
             <a href="{% url 'user_activity' request.user.username %}" class="btn-luxury" style="display: inline-flex; align-items: center; gap: 8px;">
-                <dotlottie-player
-                    src="https://lottie.host/a0f3f9db-5bec-4021-9a1c-fcf89094fa40/bS4sK7DiCM.lottie"
-                    background="transparent"
-                    speed="1"
-                    class="icon-size" 
-                    loop
-                    autoplay
-                ></dotlottie-player>
-                سجل الانشطة
-            </a>
+    <dotlottie-player
+        src="https://lottie.host/a0f3f9db-5bec-4021-9a1c-fcf89094fa40/bS4sK7DiCM.lottie"
+        background="transparent"
+        speed="1"
+        class="icon-size" 
+        loop
+        autoplay
+    ></dotlottie-player>
+    سجل الانشطة
+</a>
         </div>
+       
     </header>
 
+    <!-- القائمة الجانبية -->
     <div class="sidebar" id="sidebar">
         <div class="flex justify-end mb-4">
-            <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+    <button onclick="toggleSidebar()" class="text-white text-2xl hover:text-purple-400 transition duration-200">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
         <a href="{% url 'create_tour' %}">
             <dotlottie-player
                 src="https://lottie.host/19c32d3e-043a-4596-92c8-8bf47520c7e7/CFVq8US2rr.lottie"
@@ -239,30 +300,35 @@
             جولاتي
         </a>
         <hr class="my-2 border-gray-600">
-        <form action="{% url 'logout' %}" method="post" class="logout-btn-form">
-            {% csrf_token %}
-            <button type="submit" class="sidebar-link logout-btn hover-effect">
-                <dotlottie-player
-                    src="https://lottie.host/c55785c0-74a2-4eb4-9117-45ca1a2e9a85/q9cyOUnIyX.lottie"
-                    background="transparent"
-                    speed="1"
-                    style="width: 93px; height: 62px"
-                    loop
-                    autoplay>
-                </dotlottie-player>
-                تسجيل الخروج
-            </button>
-        </form>
+<form action="{% url 'logout' %}" method="post" class="logout-btn-form">
+  {% csrf_token %}
+<button type="submit" class="sidebar-link logout-btn hover-effect">
+    <dotlottie-player
+      src="https://lottie.host/c55785c0-74a2-4eb4-9117-45ca1a2e9a85/q9cyOUnIyX.lottie"
+      background="transparent"
+      speed="1"
+      style="width: 93px; height: 62px"
+      loop
+      autoplay>
+    </dotlottie-player>
+    تسجيل الخروج
+  </button>
+</form>
+
+
+        </a>
     </div>
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer style="text-align: center; padding: 1rem; background: linear-gradient(to right, #1e3a8a, #6b21a8); color: white; font-size: 0.9rem;">
-        جميع الحقوق محفوظة © Eng. ISLAM - {% now "Y" %}
-    </footer>
 
+   <footer style="text-align: center; padding: 1rem; background: linear-gradient(to right, #1e3a8a, #6b21a8); color: white; font-size: 0.9rem;">
+  جميع الحقوق محفوظة &copy; Eng. ISLAM - {% now "Y" %}
+</footer>
+
+    <!--  الوان -->
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
@@ -278,14 +344,21 @@
             document.body.classList.add("dark-mode");
         }
 
-        window.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.querySelector('.menu-btn');
 
-            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-                sidebar.classList.remove('open');
-            }
-        });
+        // إغلاق القائمة عند الضغط خارجها
+window.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const menuBtn = document.querySelector('.menu-btn');
+
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+    }
+});
+
     </script>
+
+
+
+
 </body>
 </html>
