@@ -529,3 +529,6 @@ def favorite_tours(request):
     return render(request, 'hotels/favorite_tours.html', {
         'favorites': favorites
     })
+def custom_logout_view(request):
+    logout(request)
+    return render(request, 'custom_logout.html')

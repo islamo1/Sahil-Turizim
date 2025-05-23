@@ -1,14 +1,13 @@
-from django.urls import path
+from django.urls import path  
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import hotel_list, add_hotel, add_price, create_tour, select_hotels_and_trips, tour_summary, view_tour_detail, delete_tour, edit_tour,my_tours, user_profile, profile_view, favorite_tours, rate_tour
+from .views import hotel_list, add_hotel, add_price, create_tour, select_hotels_and_trips, tour_summary, view_tour_detail, delete_tour, edit_tour,my_tours, user_profile, profile_view, favorite_tours, rate_tour, custom_logout_view
 from django.shortcuts import render 
 from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='hotels/home.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('logged-out/', TemplateView.as_view(template_name='hotels/logout.html'), name='logged_out'),
+    path('logout/', custom_logout_view, name='logout'),  # سمّيته logout عشان القالب يشتغل علطول
     path('hotels/', hotel_list, name='hotel_list'),
     path('hotels/add/', add_hotel, name='add_hotel'),
     path('prices/add/', add_price, name='add_price'),
