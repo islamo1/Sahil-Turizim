@@ -1,5 +1,5 @@
 from django.urls import path  
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from .views import hotel_list, add_hotel, add_price, create_tour, select_hotels_and_trips, tour_summary, view_tour_detail, delete_tour, edit_tour,my_tours, user_profile, profile_view, favorite_tours, rate_tour, custom_logout_view
 from django.shortcuts import render 
 from django.views.generic import TemplateView
