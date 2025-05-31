@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}TS Sahil Turizim{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
@@ -20,6 +21,7 @@
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 
     <style>
+        
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, #1e3a8a, #6b21a8);
@@ -123,6 +125,9 @@
             transform: scale(0.98);
         }
 
+
+
+
         main {
             padding: 1.5rem;
             max-width: 1200px;
@@ -182,33 +187,62 @@
         }
 
         /* Responsive Tweaks */
-        @media (max-width: 768px) {
+       @media (max-width: 640px) {
     header {
-        flex-direction: column; /* ✅ العناصر تتكدس عمودياً */
-        align-items: center;    /* ✅ توسيط داخل العمود */
-        gap: 1.2rem;
-        padding: 1rem 0.5rem;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
-    
 
-            .logo a {
-                font-size: 1.2rem;
-            }
+    .logo {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
 
-            .btn-luxury {
-                width: 100%;
-                text-align: center;
-                padding: 0.75rem;
-            }
+    .logo a {
+        font-size: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-            .menu-btn {
-                align-self: flex-end;
-            }
+    .logo img {
+        width: 64px;
+        height: auto;
+    }
 
-            main {
-                padding: 1rem;
-            }
-        }
+    .btn-luxury {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.25rem 0;
+        font-size: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon-size {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 20px !important;
+        margin-inline-end: 0.5rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    footer {
+        font-size: 0.75rem;
+        padding: 1rem;
+    }
+
+    .menu-btn {
+        align-self: flex-end;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -220,7 +254,11 @@
             <a href="{% url 'create_tour' %}" class="flex items-center text-2xl font-extrabold tracking-wide">
                 <i class="fas fa-plane text-3xl ml-2"></i>
                 TS Sahil Turizim
+                <a href="{% url 'create_tour' %}">
+    <img src="{% static 'images/Sahil.png' %}" alt="شعار TS SAHIL TURIZM" class="h-15 md:h-16 md:w-16 2 shadow-lg hover:scale-110 transition-transform">
+</a>
             </a>
+           
             <button onclick="toggleTheme()" class="btn-icon bg-gray-800 text-white p-2 rounded-full">
                 <dotlottie-player
                     src="https://lottie.host/3cf012c6-bbbc-41f4-95bb-0229c0a6e4a5/zXwpI1fPs5.lottie"
