@@ -4,8 +4,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}TS Sahil Turizim{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}TS Sahil Turizim{% endblock %}</title>
     
 
     <!-- Google Fonts -->
@@ -187,34 +188,49 @@
         }
 
         /* Responsive Tweaks */
-        @media (max-width: 768px) {
+       @media (max-width: 768px) {
     header {
-        flex-direction: column; /* ✅ العناصر تتكدس عمودياً */
-        align-items: center;    /* ✅ توسيط داخل العمود */
-        gap: 1.2rem;
+        flex-direction: column;
+        gap: 1rem;
         padding: 1rem 0.5rem;
     }
 
+    .logo a {
+        font-size: 1.2rem;
+    }
 
+    .btn-luxury {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
 
-            .logo a {
-                font-size: 1.2rem;
-            }
+    .menu-btn {
+        align-self: flex-end;
+    }
 
-            .btn-luxury {
-                width: 100%;
-                text-align: center;
-                padding: 0.75rem;
-            }
+    .icon-size {
+        width: 24px;
+        height: 24px;
+        font-size: 18px !important;
+    }
 
-            .menu-btn {
-                align-self: flex-end;
-            }
+    .sidebar {
+        width: 85vw;
+        padding: 1rem;
+    }
 
-            main {
-                padding: 1rem;
-            }
-        }
+    .sidebar a, .logout-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -227,7 +243,7 @@
                 <i class="fas fa-plane text-3xl ml-2"></i>
                 TS Sahil Turizim
                 <a href="{% url 'create_tour' %}">
-    <img src="{% static 'images/Sahil.png' %}" alt="شعار TS SAHIL TURIZM" class="h-15 md:h-16 md:w-16 2 shadow-lg hover:scale-110 transition-transform">
+    <img src="{% static 'images/sah.png' %}" alt="شعار TS SAHIL TURIZM" class="h-15 md:h-16 md:w-16 2 shadow-lg hover:scale-110 transition-transform">
 </a>
             </a>
            
